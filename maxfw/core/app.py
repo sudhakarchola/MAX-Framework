@@ -30,12 +30,23 @@ class MAXApp(object):
         # load config
         if os.path.exists("config.py"):
             self.app.config.from_object("config")
+            
+        self.authorizations = {
+            'Basic Auth': {
+                'type': 'basic',
+                'in': 'header',
+                'name': 'Authorization'
+            },
+        }    
 
         self.api = Api(
             self.app,
             title=title,
             description=desc,
-            version=version)
+            version=version,
+            security='Basic Auth',
+            authorizations=self.authorizations
+        )
 
         self.api.namespaces.clear()
         self.api.add_namespace(MAX_API)
